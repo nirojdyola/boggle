@@ -1,0 +1,9 @@
+.login-center {
+  top: 30%;
+  left: 40%;
+  position: fixed;
+}
+
+h1 {
+  text-align: center;
+}

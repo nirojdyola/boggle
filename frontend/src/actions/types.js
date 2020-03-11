@@ -1,0 +1,4 @@
+export const SET_PLAYER_NAME = "SET_PLAYER_NAME";
+export const SET_PLAYER_TOTAL_SCORE = "SET_PLAYER_TOTAL_SCORE";
+export const SET_SUBMIT = "SET_SUBMIT";
+export const SET_TIMER = "SET_TIMER";

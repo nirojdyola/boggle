@@ -1,0 +1,11 @@
+.player {
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.duration {
+  color: #ffffff;
+  text-align: center;
+  font-size: 2em;
+}

@@ -1,4 +1,6 @@
- 4 X 4 board Boggle is word search games.
+# **Boggle Game**
+
+4 X 4 board Boggle is word search games.
 
 ## Structure
 

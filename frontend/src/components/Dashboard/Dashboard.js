@@ -10,6 +10,7 @@ import axios from "axios";
 
 class Dashboard extends Component {
   formRef = React.createRef();
+  _isMounted = false;
 
   state = {
     scores: [],
@@ -20,10 +21,10 @@ class Dashboard extends Component {
     errMsg: ""
   };
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     if (nextProps.submit) {
-      this.handleSubmit();
-      this.props.setTimer(false);
+      await this.handleSubmit();
+      await this.props.setTimer(false);
     }
   }
 
@@ -94,21 +95,34 @@ class Dashboard extends Component {
     History.push("/results");
   };
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   async componentDidMount() {
+    this._isMounted = true;
     // if already submitted then close this
     if (this.props.submit) History.push("/");
+    await this.fetchData();
+  }
+
+  fetchData = async () => {
     const response = await axios(
       `${process.env.REACT_APP_API_URL}/games/check-combination`
     );
-    if (response.data) {
-      this.setState({
-        board: response.data.board,
-        boardLength: response.data.boardLength,
-        results: response.data.results
-      });
-      this.props.setTimer(true);
+    if (response.data && this._isMounted) {
+      if (response.data.results.length === 0) {
+        await this.fetchData();
+      } else {
+        await this.setState({
+          board: response.data.board,
+          boardLength: response.data.boardLength,
+          results: response.data.results
+        });
+        await this.props.setTimer(true);
+      }
     }
-  }
+  };
 
   handlePress = () => {
     const { errMsg } = this.state;
@@ -238,6 +252,9 @@ class Dashboard extends Component {
               )}
             </Col>
           </Row>
+        )}
+        {board.length <= 0 && (
+          <div style={{ fontSize: "2em", textAlign: "center" }}>...Loading</div>
         )}
       </>
     );
